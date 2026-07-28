@@ -4,6 +4,7 @@ import com.innerpranava.backend.entity.*;
 import com.innerpranava.backend.repository.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -23,12 +24,13 @@ public class DataSeeder implements CommandLineRunner {
     private final BillingRepository billingRepository;
     private final FeedbackRepository feedbackRepository;
     private final NotificationRepository notificationRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public DataSeeder(UserRepository userRepository, PatientRepository patientRepository, DoctorRepository doctorRepository,
                        TherapistRepository therapistRepository, AppointmentRepository appointmentRepository,
                        TherapyRepository therapyRepository, TherapySessionRepository therapySessionRepository,
                        BillingRepository billingRepository, FeedbackRepository feedbackRepository,
-                       NotificationRepository notificationRepository) {
+                       NotificationRepository notificationRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.patientRepository = patientRepository;
         this.doctorRepository = doctorRepository;
@@ -39,6 +41,7 @@ public class DataSeeder implements CommandLineRunner {
         this.billingRepository = billingRepository;
         this.feedbackRepository = feedbackRepository;
         this.notificationRepository = notificationRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -49,7 +52,7 @@ public class DataSeeder implements CommandLineRunner {
         User admin = new User();
         admin.setName("Dr. Anjali Rao");
         admin.setEmail("admin@innerpranava.com");
-        admin.setPassword("admin123");
+        admin.setPassword(passwordEncoder.encode("admin123"));
         admin.setPhone("9876543210");
         admin.setRole(Role.ADMIN);
         admin = userRepository.save(admin);
@@ -57,7 +60,7 @@ public class DataSeeder implements CommandLineRunner {
         User receptionUser = new User();
         receptionUser.setName("Meera Sharma");
         receptionUser.setEmail("reception@innerpranava.com");
-        receptionUser.setPassword("reception123");
+        receptionUser.setPassword(passwordEncoder.encode("reception123"));
         receptionUser.setPhone("9876543211");
         receptionUser.setRole(Role.RECEPTIONIST);
         receptionUser = userRepository.save(receptionUser);
@@ -65,7 +68,7 @@ public class DataSeeder implements CommandLineRunner {
         User patientUser = new User();
         patientUser.setName("Arjun Verma");
         patientUser.setEmail("arjun@example.com");
-        patientUser.setPassword("patient123");
+        patientUser.setPassword(passwordEncoder.encode("patient123"));
         patientUser.setPhone("9876543212");
         patientUser.setRole(Role.PATIENT);
         patientUser = userRepository.save(patientUser);
@@ -73,7 +76,7 @@ public class DataSeeder implements CommandLineRunner {
         User doctorUser = new User();
         doctorUser.setName("Dr. Nikhil Bhatia");
         doctorUser.setEmail("nikhil@example.com");
-        doctorUser.setPassword("doctor123");
+        doctorUser.setPassword(passwordEncoder.encode("doctor123"));
         doctorUser.setPhone("9876543213");
         doctorUser.setRole(Role.DOCTOR);
         doctorUser = userRepository.save(doctorUser);
@@ -81,7 +84,7 @@ public class DataSeeder implements CommandLineRunner {
         User therapistUser = new User();
         therapistUser.setName("Sanjana Kulkarni");
         therapistUser.setEmail("sanjana@example.com");
-        therapistUser.setPassword("therapist123");
+        therapistUser.setPassword(passwordEncoder.encode("therapist123"));
         therapistUser.setPhone("9876543214");
         therapistUser.setRole(Role.THERAPIST);
         therapistUser = userRepository.save(therapistUser);
