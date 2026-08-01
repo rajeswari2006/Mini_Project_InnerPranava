@@ -1,4 +1,5 @@
 package com.innerpranava.backend.entity;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -19,6 +20,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

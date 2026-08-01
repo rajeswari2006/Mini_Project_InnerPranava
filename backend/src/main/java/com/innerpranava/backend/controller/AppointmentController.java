@@ -4,6 +4,7 @@ import com.innerpranava.backend.dto.AppointmentRequest;
 import com.innerpranava.backend.entity.*;
 import com.innerpranava.backend.repository.*;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -30,9 +31,15 @@ public class AppointmentController {
         return appointmentRepository.findAll();
     }
 
+    @GetMapping("/me")
+    public List<Appointment> getMyAppointments(Authentication authentication) {
+        Patient patient = patientRepository.findByUserEmail(authentication.getName())
+                .orElseThrow(() -> new RuntimeException("Patient not found"));
+        return appointmentRepository.findByPatientId(patient.getId());
+    }
+
     @PostMapping
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest request) {
-        // Conflict detection: is this doctor already booked at this date+time?
         List<Appointment> existing = appointmentRepository.findByDoctorIdAndDate(request.getDoctorId(), request.getDate());
         boolean conflict = existing.stream()
                 .anyMatch(a -> a.getTime().equals(request.getTime()) && a.getStatus() != AppointmentStatus.CANCELLED);

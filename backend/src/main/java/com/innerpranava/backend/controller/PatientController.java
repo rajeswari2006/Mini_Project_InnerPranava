@@ -5,6 +5,7 @@ import com.innerpranava.backend.entity.Patient;
 import com.innerpranava.backend.repository.PatientRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ import java.util.List;
 public class PatientController {
 
     private final PatientRepository patientRepository;
-
+    
     public PatientController(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
     }
@@ -32,6 +33,12 @@ public class PatientController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    @GetMapping("/me")
+    public ResponseEntity<PatientDto> getMyProfile(Authentication authentication) {
+        return patientRepository.findByUserEmail(authentication.getName())
+                .map(patient -> ResponseEntity.ok(toDto(patient)))
+                .orElse(ResponseEntity.notFound().build());
+    }
     private PatientDto toDto(Patient patient) {
         return new PatientDto(
                 patient.getId(),
