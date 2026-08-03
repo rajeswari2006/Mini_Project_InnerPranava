@@ -1,0 +1,19 @@
+:root {
+  --forest: #2E7D32;
+  --sage: #E8F5E9;
+  --saffron: #FFB300;
+  --warmwhite: #FAFAF7;
+  --darktext: #212121;
+  --white: #ffffff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background-color: var(--warmwhite);
+  font-family: 'Inter', sans-serif;
+  color: var(--darktext);
+}
