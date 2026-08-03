@@ -32,6 +32,13 @@ public class AppointmentController {
         return appointmentRepository.findAll().stream().map(this::toDto).toList();
     }
 
+    @GetMapping("/doctor-me")
+    public List<AppointmentDto> getMyDoctorAppointments(Authentication authentication) {
+    Doctor doctor = doctorRepository.findByUserEmail(authentication.getName())
+            .orElseThrow(() -> new RuntimeException("Doctor not found"));
+    return appointmentRepository.findByDoctorId(doctor.getId()).stream().map(this::toDto).toList();
+    }
+
     @GetMapping("/me")
     public List<AppointmentDto> getMyAppointments(Authentication authentication) {
         Patient patient = patientRepository.findByUserEmail(authentication.getName())

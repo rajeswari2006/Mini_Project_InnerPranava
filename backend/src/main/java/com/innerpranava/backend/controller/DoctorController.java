@@ -1,10 +1,13 @@
 package com.innerpranava.backend.controller;
 
+import com.innerpranava.backend.dto.AppointmentDto;
 import com.innerpranava.backend.dto.DoctorDto;
 import com.innerpranava.backend.entity.Doctor;
 import com.innerpranava.backend.repository.DoctorRepository;
+import com.innerpranava.backend.repository.AppointmentRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -24,7 +27,12 @@ public class DoctorController {
                 .map(this::toDto)
                 .toList();
     }
-
+    @GetMapping("/me")
+    public ResponseEntity<DoctorDto> getMyProfile(Authentication authentication) {
+    return doctorRepository.findByUserEmail(authentication.getName())
+            .map(doctor -> ResponseEntity.ok(toDto(doctor)))
+            .orElse(ResponseEntity.notFound().build());
+}
     @GetMapping("/{id}")
     public ResponseEntity<DoctorDto> getDoctorById(@PathVariable Long id) {
         return doctorRepository.findById(id)
