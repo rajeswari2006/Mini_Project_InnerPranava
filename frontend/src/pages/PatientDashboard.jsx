@@ -40,7 +40,7 @@ export default function PatientDashboard() {
                 appointments.map((appt) => (
                   <div className="appointment-row" key={appt.id}>
                     <div>
-                      <p className="appointment-therapy">{appt.therapy?.name}</p>
+                      <p className="appointment-therapy">{appt.therapyName}</p>
                       <p className="appointment-date">
                         {appt.date} at {appt.time}
                       </p>
