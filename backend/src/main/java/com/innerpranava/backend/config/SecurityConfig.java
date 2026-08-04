@@ -52,7 +52,7 @@ public class SecurityConfig {
         return config;
         }))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login").permitAll()
+                .requestMatchers("/api/auth/login", "/api/auth/register/patient", "/api/public/**").permitAll()
                 .requestMatchers("/api/auth/**").authenticated()
                 .anyRequest().authenticated()
             )

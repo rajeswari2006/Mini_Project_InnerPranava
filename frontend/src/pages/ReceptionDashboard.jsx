@@ -35,8 +35,8 @@ export default function ReceptionDashboard() {
                 <div>
                   <p className="appointment-therapy">{appt.patientName}</p>
                   <p className="appointment-date">
-                    Dr. {appt.doctorName} — {appt.date} at {appt.time}
-                  </p>
+                    {appt.doctorName} — {appt.date} at {appt.time}
+                </p>
                 </div>
                 <span className={`status-badge ${statusClass[appt.status]}`}>
                   {appt.status}

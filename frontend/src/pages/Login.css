@@ -3,35 +3,37 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, var(--warmwhite) 0%, var(--sage) 100%);
+  background: linear-gradient(160deg, var(--warmwhite) 0%, var(--sage) 100%);
 }
 
 .login-card {
   background: var(--white);
-  padding: 48px 40px;
-  border-radius: 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  padding: 52px 44px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border);
   width: 100%;
-  max-width: 380px;
+  max-width: 400px;
 }
 
 .login-logo {
   color: var(--forest);
-  font-size: 28px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
   margin: 0;
   text-align: center;
 }
 
 .login-subtitle {
-  color: #757575;
+  color: var(--graytext);
   text-align: center;
-  margin: 8px 0 32px;
+  margin: 8px 0 36px;
   font-size: 14px;
 }
 
 .login-field {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
 .login-field label {
@@ -39,43 +41,46 @@
   font-size: 13px;
   font-weight: 600;
   color: var(--darktext);
-  margin-bottom: 6px;
+  margin-bottom: 7px;
 }
 
 .login-field input {
   width: 100%;
-  padding: 12px 14px;
-  border: 1px solid #E0E0E0;
-  border-radius: 8px;
+  padding: 13px 15px;
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
   font-size: 14px;
   font-family: inherit;
-  transition: border-color 0.2s;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .login-field input:focus {
   outline: none;
   border-color: var(--forest);
+  box-shadow: 0 0 0 3px rgba(46, 125, 50, 0.1);
 }
 
 .login-error {
   color: #D32F2F;
   font-size: 13px;
-  margin: -8px 0 16px;
+  margin: -10px 0 16px;
 }
 
 .login-button {
   width: 100%;
-  padding: 13px;
-  background: var(--forest);
+  padding: 14px;
+  background: linear-gradient(135deg, var(--forest) 0%, var(--forest-dark) 100%);
   color: white;
   border: none;
-  border-radius: 8px;
+  border-radius: 10px;
   font-size: 15px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  box-shadow: var(--shadow-sm);
 }
 
 .login-button:hover {
-  background: #256428;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }

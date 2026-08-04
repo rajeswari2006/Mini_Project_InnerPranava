@@ -46,6 +46,14 @@ public class AppointmentController {
         return appointmentRepository.findByPatientId(patient.getId()).stream().map(this::toDto).toList();
     }
 
+    @PutMapping("/{id}/complete")
+        public ResponseEntity<?> markCompleted(@PathVariable Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        appointmentRepository.save(appointment);
+        return ResponseEntity.ok(toDto(appointment));
+        }
     @PostMapping
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest request) {
         List<Appointment> existing = appointmentRepository.findByDoctorIdAndDate(request.getDoctorId(), request.getDate());

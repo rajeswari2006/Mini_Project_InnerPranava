@@ -5,7 +5,13 @@ import PatientDashboard from "./pages/PatientDashboard";
 import DoctorDashboard from "./pages/DoctorDashboard";
 import TherapistDashboard from "./pages/TherapistDashboard";
 import ReceptionDashboard from "./pages/ReceptionDashboard";
+import PatientsList from "./pages/PatientsList";
+import DoctorsList from "./pages/DoctorsList";
+import AppointmentsList from "./pages/AppointmentsList";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Register from "./pages/Register";
+import AddStaff from "./pages/AddStaff";
+import LandingPage from "./pages/LandingPage";
 
 function App() {
   return (
@@ -16,7 +22,13 @@ function App() {
       <Route path="/doctor" element={<ProtectedRoute allowedRoles={["DOCTOR"]}><DoctorDashboard /></ProtectedRoute>} />
       <Route path="/therapist" element={<ProtectedRoute allowedRoles={["THERAPIST"]}><TherapistDashboard /></ProtectedRoute>} />
       <Route path="/reception" element={<ProtectedRoute allowedRoles={["RECEPTIONIST"]}><ReceptionDashboard /></ProtectedRoute>} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="/patients" element={<ProtectedRoute><PatientsList /></ProtectedRoute>} />
+      <Route path="/doctors" element={<ProtectedRoute><DoctorsList /></ProtectedRoute>} />
+      <Route path="/appointments" element={<ProtectedRoute><AppointmentsList /></ProtectedRoute>} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/add-staff" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AddStaff /></ProtectedRoute>} />
+      <Route path="/" element={<LandingPage />} />
     </Routes>
   );
 }
