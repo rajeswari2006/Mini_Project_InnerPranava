@@ -7,11 +7,13 @@ export default function PatientDashboard() {
   const [profile, setProfile] = useState(null);
   const [appointments, setAppointments] = useState([]);
   const [notifications, setNotifications] = useState([]);
+  const [recoveryScore, setRecoveryScore] = useState(null);
 
   useEffect(() => {
     api.get("/patients/me").then((res) => setProfile(res.data));
     api.get("/appointments/me").then((res) => setAppointments(res.data));
     api.get("/notifications/me").then((res) => setNotifications(res.data));
+    api.get("/patients/me/recovery-score").then((res) => setRecoveryScore(res.data));
   }, []);
 
   const statusClass = {
@@ -29,7 +31,30 @@ export default function PatientDashboard() {
           <h1>{profile ? `Welcome, ${profile.name}` : "Welcome"}</h1>
           <p>Here's an overview of your care journey</p>
         </div>
-
+        {recoveryScore && (
+    <div className="card" style={{ display: "flex", alignItems: "center", gap: 24 }}>
+    <div style={{
+      width: 80, height: 80, borderRadius: "50%",
+      background: "conic-gradient(var(--forest) " + (recoveryScore.recoveryScore * 3.6) + "deg, var(--sage) 0deg)",
+      display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0
+    }}>
+      <div style={{
+        width: 62, height: 62, borderRadius: "50%", background: "white",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontWeight: 800, fontSize: 18, color: "var(--darktext)"
+      }}>
+        {recoveryScore.recoveryScore}
+      </div>
+    </div>
+    <div>
+      <h3 style={{ margin: "0 0 4px" }}>Recovery Score</h3>
+      <p style={{ color: "var(--graytext)", fontSize: 13, margin: 0 }}>
+        {recoveryScore.completedAppointments} of {recoveryScore.totalAppointments} sessions completed
+        {recoveryScore.averageRating > 0 && ` — avg rating ${recoveryScore.averageRating}/5`}
+      </p>
+    </div>
+  </div>
+)}
         <div className="patient-grid">
           <div>
             <div className="card">
@@ -40,7 +65,7 @@ export default function PatientDashboard() {
                 appointments.map((appt) => (
                   <div className="appointment-row" key={appt.id}>
                     <div>
-                      <p className="appointment-therapy">{appt.therapy?.name}</p>
+                      <p className="appointment-therapy">{appt.therapyName}</p>
                       <p className="appointment-date">
                         {appt.date} at {appt.time}
                       </p>

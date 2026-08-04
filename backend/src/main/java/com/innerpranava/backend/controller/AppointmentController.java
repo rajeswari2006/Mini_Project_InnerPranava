@@ -1,5 +1,6 @@
 package com.innerpranava.backend.controller;
 
+import com.innerpranava.backend.dto.AppointmentDto;
 import com.innerpranava.backend.dto.AppointmentRequest;
 import com.innerpranava.backend.entity.*;
 import com.innerpranava.backend.repository.*;
@@ -27,17 +28,32 @@ public class AppointmentController {
     }
 
     @GetMapping
-    public List<Appointment> getAllAppointments() {
-        return appointmentRepository.findAll();
+    public List<AppointmentDto> getAllAppointments() {
+        return appointmentRepository.findAll().stream().map(this::toDto).toList();
+    }
+
+    @GetMapping("/doctor-me")
+    public List<AppointmentDto> getMyDoctorAppointments(Authentication authentication) {
+    Doctor doctor = doctorRepository.findByUserEmail(authentication.getName())
+            .orElseThrow(() -> new RuntimeException("Doctor not found"));
+    return appointmentRepository.findByDoctorId(doctor.getId()).stream().map(this::toDto).toList();
     }
 
     @GetMapping("/me")
-    public List<Appointment> getMyAppointments(Authentication authentication) {
+    public List<AppointmentDto> getMyAppointments(Authentication authentication) {
         Patient patient = patientRepository.findByUserEmail(authentication.getName())
                 .orElseThrow(() -> new RuntimeException("Patient not found"));
-        return appointmentRepository.findByPatientId(patient.getId());
+        return appointmentRepository.findByPatientId(patient.getId()).stream().map(this::toDto).toList();
     }
 
+    @PutMapping("/{id}/complete")
+        public ResponseEntity<?> markCompleted(@PathVariable Long id) {
+        Appointment appointment = appointmentRepository.findById(id)
+            .orElseThrow(() -> new RuntimeException("Appointment not found"));
+        appointment.setStatus(AppointmentStatus.COMPLETED);
+        appointmentRepository.save(appointment);
+        return ResponseEntity.ok(toDto(appointment));
+        }
     @PostMapping
     public ResponseEntity<?> createAppointment(@RequestBody AppointmentRequest request) {
         List<Appointment> existing = appointmentRepository.findByDoctorIdAndDate(request.getDoctorId(), request.getDate());
@@ -64,6 +80,18 @@ public class AppointmentController {
         appointment.setStatus(AppointmentStatus.SCHEDULED);
 
         Appointment saved = appointmentRepository.save(appointment);
-        return ResponseEntity.ok(saved);
+        return ResponseEntity.ok(toDto(saved));
+    }
+
+    private AppointmentDto toDto(Appointment a) {
+        return new AppointmentDto(
+                a.getId(),
+                a.getPatient().getUser().getName(),
+                a.getDoctor().getUser().getName(),
+                a.getTherapy().getName(),
+                a.getDate(),
+                a.getTime(),
+                a.getStatus().name()
+        );
     }
 }

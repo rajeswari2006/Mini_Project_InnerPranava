@@ -15,10 +15,14 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
 
     List<Appointment> findByPatientId(Long patientId);
 
+    List<Appointment> findByDoctorId(Long doctorId);
+
     @Query("SELECT a.therapy.name, COUNT(a) FROM Appointment a GROUP BY a.therapy.name ORDER BY COUNT(a) DESC")
     List<Object[]> countAppointmentsByTherapy();
 
     @Query("SELECT FUNCTION('MONTH', a.date), COUNT(a) FROM Appointment a GROUP BY FUNCTION('MONTH', a.date)")
     List<Object[]> countAppointmentsByMonth();
+
+
 
 }
