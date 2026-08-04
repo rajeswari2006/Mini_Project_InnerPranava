@@ -71,7 +71,7 @@ export default function LandingPage() {
         </div>
       </section>
 
-      <section className="landing-section">
+      <section className="section-with-bg">
         <h2>Hospital Hours</h2>
         <div className="grid-3">
           <div className="info-card">

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { LayoutDashboard, Users, Stethoscope, Calendar, LogOut, UserPlus } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import "./Sidebar.css";
@@ -35,8 +35,13 @@ const NAV_BY_ROLE = {
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const location = useLocation();
+  const navigate = useNavigate();
   const navItems = NAV_BY_ROLE[user?.role] || [];
 
+  const handleLogout = () => {
+  logout();
+    window.location.href = "/";
+  };
   return (
     <aside className="sidebar">
       <div className="sidebar-logo">InnerPranava</div>
@@ -62,7 +67,7 @@ export default function Sidebar() {
             <p className="sidebar-role">{user?.role}</p>
           </div>
         </div>
-        <button className="sidebar-logout" onClick={logout}>
+        <button className="sidebar-logout" onClick={handleLogout}>
           <LogOut size={16} />
           <span>Logout</span>
         </button>
