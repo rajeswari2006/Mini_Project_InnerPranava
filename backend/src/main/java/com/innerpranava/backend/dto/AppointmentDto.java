@@ -16,4 +16,9 @@ public class AppointmentDto {
     private LocalDate date;
     private LocalTime time;
     private String status;
+    private Integer patientAge;
+    private String patientGender;
+    private String patientBloodGroup;
+    private String patientAllergies;
+    private String patientMedications;
 }

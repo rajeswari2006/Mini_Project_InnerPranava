@@ -46,6 +46,27 @@ public class AppointmentController {
         return appointmentRepository.findByPatientId(patient.getId()).stream().map(this::toDto).toList();
     }
 
+    @GetMapping("/available-slots")
+public List<java.util.Map<String, Object>> getAvailableSlots(@RequestParam Long doctorId, @RequestParam String date) {
+    java.time.LocalDate d = java.time.LocalDate.parse(date);
+    List<Appointment> existing = appointmentRepository.findByDoctorIdAndDate(doctorId, d);
+    java.util.Set<java.time.LocalTime> booked = existing.stream()
+            .filter(a -> a.getStatus() != AppointmentStatus.CANCELLED)
+            .map(Appointment::getTime)
+            .collect(java.util.stream.Collectors.toSet());
+
+    List<java.util.Map<String, Object>> slots = new java.util.ArrayList<>();
+    java.time.LocalTime t = java.time.LocalTime.of(9, 0);
+    while (!t.isAfter(java.time.LocalTime.of(16, 30))) {
+        java.util.Map<String, Object> slot = new java.util.HashMap<>();
+        slot.put("time", t.toString());
+        slot.put("booked", booked.contains(t));
+        slots.add(slot);
+        t = t.plusMinutes(30);
+    }
+    return slots;
+}
+
     @PutMapping("/{id}/complete")
         public ResponseEntity<?> markCompleted(@PathVariable Long id) {
         Appointment appointment = appointmentRepository.findById(id)
@@ -84,14 +105,19 @@ public class AppointmentController {
     }
 
     private AppointmentDto toDto(Appointment a) {
-        return new AppointmentDto(
-                a.getId(),
-                a.getPatient().getUser().getName(),
-                a.getDoctor().getUser().getName(),
-                a.getTherapy().getName(),
-                a.getDate(),
-                a.getTime(),
-                a.getStatus().name()
+    return new AppointmentDto(
+            a.getId(),
+            a.getPatient().getUser().getName(),
+            a.getDoctor().getUser().getName(),
+            a.getTherapy().getName(),
+            a.getDate(),
+            a.getTime(),
+            a.getStatus().name(),
+            a.getPatient().getAge(),
+            a.getPatient().getGender(),
+            a.getPatient().getBloodGroup(),
+            a.getPatient().getAllergies(),
+            a.getPatient().getCurrentMedications()
         );
     }
 }
