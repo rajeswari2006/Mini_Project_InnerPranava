@@ -8,12 +8,14 @@ export default function PatientDashboard() {
   const [appointments, setAppointments] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [recoveryScore, setRecoveryScore] = useState(null);
+  const [history, setHistory] = useState([]);
 
   useEffect(() => {
     api.get("/patients/me").then((res) => setProfile(res.data));
     api.get("/appointments/me").then((res) => setAppointments(res.data));
     api.get("/notifications/me").then((res) => setNotifications(res.data));
     api.get("/patients/me/recovery-score").then((res) => setRecoveryScore(res.data));
+    api.get("/patients/me/history").then((res) => setHistory(res.data));
   }, []);
 
   const statusClass = {
@@ -88,6 +90,23 @@ export default function PatientDashboard() {
                 <p><strong>Current Medications:</strong> {profile.currentMedications}</p>
               </div>
             )}
+            <div className="card">
+  <h3>Treatment History</h3>
+  {history.length === 0 ? (
+    <p className="empty-state">No history yet.</p>
+  ) : (
+    history.map((h, i) => (
+      <div className="timeline-item" key={i}>
+        <div className="timeline-dot"></div>
+        <div className="timeline-content">
+          <h4>{h.title}</h4>
+          <p>{h.description}</p>
+          <p className="timeline-date">{h.date}</p>
+        </div>
+      </div>
+    ))
+  )}
+</div>
           </div>
 
           <div className="card">

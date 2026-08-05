@@ -1,5 +1,5 @@
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { LayoutDashboard, Users, Stethoscope, Calendar, LogOut, UserPlus } from "lucide-react";
+import { LayoutDashboard, Users, Stethoscope, Calendar, LogOut, UserPlus, Receipt } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import "./Sidebar.css";
 
@@ -29,6 +29,7 @@ const NAV_BY_ROLE = {
   PATIENT: [
     { label: "Dashboard", path: "/patient", icon: LayoutDashboard },
     { label: "Appointments", path: "/appointments", icon: Calendar },
+    { label: "Invoices", path: "/invoices", icon: Receipt },
   ],
 };
 
