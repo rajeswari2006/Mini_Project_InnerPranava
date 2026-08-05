@@ -12,6 +12,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Register from "./pages/Register";
 import AddStaff from "./pages/AddStaff";
 import LandingPage from "./pages/LandingPage";
+import Invoice from "./pages/Invoice";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="/add-staff" element={<ProtectedRoute allowedRoles={["ADMIN"]}><AddStaff /></ProtectedRoute>} />
       <Route path="/" element={<LandingPage />} />
+      <Route path="/invoices" element={<ProtectedRoute allowedRoles={["PATIENT"]}><Invoice /></ProtectedRoute>} />
     </Routes>
   );
 }
