@@ -1,7 +1,8 @@
 import axios from "axios";
 
+// Force fresh build (cache-bust) - reading VITE_API_URL at build time
 const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:8080/api",
 });
 
 // Attach the JWT to every outgoing request automatically, if one exists
