@@ -55,9 +55,10 @@ public class SecurityConfig {
         return config;
         }))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/login", "/api/auth/register/patient", "/api/public/**").permitAll()
-                .requestMatchers("/api/auth/**").authenticated()
-                .anyRequest().authenticated()
+            .requestMatchers(org.springframework.http.HttpMethod.OPTIONS, "/**").permitAll()
+            .requestMatchers("/api/auth/login", "/api/auth/register/patient", "/api/public/**").permitAll()
+            .requestMatchers("/api/auth/**").authenticated()
+            .anyRequest().authenticated()
             )
             .sessionManagement(session -> session
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
